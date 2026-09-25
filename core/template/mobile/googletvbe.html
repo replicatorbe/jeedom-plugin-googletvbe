@@ -1,0 +1,283 @@
+<div class="eqLogic eqLogic-widget #class# #category# googletvbe-widget" data-eqType="#eqType#" data-eqLogic_id="#id#" data-eqLogic_uid="#uid#" data-version="#version#" data-translate-category="#translate_category#" data-category="#category#" data-tags="#tags#" data-gtv-ids="#gtv_ids#" data-gtv-state="#gtv_state#" data-gtv-apps="#gtv_apps#" style="width: #width#;height: #height#;#style#">
+  <div class="widget-name">
+    <span style="color:#background-color#" title="#alert_name#"><i class='#alert_icon#'></i></span>
+    <span class="cmd refresh pull-right cursor" data-cmd_id="#refresh_id#" title="{{Relire l'état}}"><i class="fas fa-sync"></i></span>
+    <span class="reportModeVisible">#name_display# <span class="object_name">#object_name#</span></span>
+    <a href="#eqLink#" class="reportModeHidden">#name_display# <span class="object_name">#object_name#</span></a>
+  </div>
+
+  <div class="gtv-remote">
+    <div class="gtv-screen">
+      <div class="gtv-screen-top">
+        <span class="gtv-dot" data-role="dot"></span>
+        <span class="gtv-state" data-role="state"></span>
+        <span class="gtv-volume" data-role="volume"></span>
+      </div>
+      <div class="gtv-app" data-role="app"></div>
+      <div class="gtv-media" data-role="media"></div>
+    </div>
+
+    <div class="gtv-row gtv-row-top">
+      <button type="button" class="gtv-btn gtv-power" data-role="power" title="{{Allumer / éteindre}}"><i class="fas fa-power-off"></i></button>
+      <button type="button" class="gtv-btn gtv-small" data-key="input" title="{{Source}}"><i class="fas fa-sign-in-alt"></i></button>
+      <button type="button" class="gtv-btn gtv-small" data-key="settings" title="{{Paramètres}}"><i class="fas fa-cog"></i></button>
+    </div>
+
+    <div class="gtv-dpad">
+      <button type="button" class="gtv-arrow gtv-up" data-key="up" data-repeat="1" title="{{Haut}}"><i class="fas fa-chevron-up"></i></button>
+      <button type="button" class="gtv-arrow gtv-left" data-key="left" data-repeat="1" title="{{Gauche}}"><i class="fas fa-chevron-left"></i></button>
+      <button type="button" class="gtv-ok" data-key="ok" title="OK">OK</button>
+      <button type="button" class="gtv-arrow gtv-right" data-key="right" data-repeat="1" title="{{Droite}}"><i class="fas fa-chevron-right"></i></button>
+      <button type="button" class="gtv-arrow gtv-down" data-key="down" data-repeat="1" title="{{Bas}}"><i class="fas fa-chevron-down"></i></button>
+    </div>
+
+    <div class="gtv-row">
+      <button type="button" class="gtv-btn" data-key="back" title="{{Retour}}"><i class="fas fa-arrow-left"></i></button>
+      <button type="button" class="gtv-btn" data-key="home" title="{{Accueil}}"><i class="fas fa-home"></i></button>
+      <button type="button" class="gtv-btn" data-key="menu" title="{{Menu}}"><i class="fas fa-bars"></i></button>
+    </div>
+
+    <div class="gtv-row">
+      <button type="button" class="gtv-btn gtv-small" data-key="previous" title="{{Précédent}}"><i class="fas fa-step-backward"></i></button>
+      <button type="button" class="gtv-btn gtv-small" data-key="rewind" title="{{Retour rapide}}"><i class="fas fa-backward"></i></button>
+      <button type="button" class="gtv-btn gtv-play" data-key="play_pause" title="{{Lecture / pause}}"><i class="fas fa-play" data-role="play-icon"></i></button>
+      <button type="button" class="gtv-btn gtv-small" data-key="forward" title="{{Avance rapide}}"><i class="fas fa-forward"></i></button>
+      <button type="button" class="gtv-btn gtv-small" data-key="next" title="{{Suivant}}"><i class="fas fa-step-forward"></i></button>
+    </div>
+
+    <div class="gtv-rocker-row">
+      <div class="gtv-rocker">
+        <button type="button" data-key="volume_up" data-repeat="1" title="{{Volume +}}"><i class="fas fa-plus"></i></button>
+        <span>VOL</span>
+        <button type="button" data-key="volume_down" data-repeat="1" title="{{Volume -}}"><i class="fas fa-minus"></i></button>
+      </div>
+      <button type="button" class="gtv-btn gtv-mute" data-key="mute_toggle" title="{{Couper / rétablir le son}}"><i class="fas fa-volume-mute"></i></button>
+      <div class="gtv-rocker">
+        <button type="button" data-key="channel_up" title="{{Chaîne +}}"><i class="fas fa-chevron-up"></i></button>
+        <span>CH</span>
+        <button type="button" data-key="channel_down" title="{{Chaîne -}}"><i class="fas fa-chevron-down"></i></button>
+      </div>
+    </div>
+
+    <div class="gtv-slider">
+      <i class="fas fa-volume-down"></i>
+      <input type="range" min="0" max="100" step="1" data-role="volume-slider" title="{{Volume}}">
+      <i class="fas fa-volume-up"></i>
+    </div>
+
+    <div class="gtv-apps" data-role="apps"></div>
+  </div>
+
+  <style>
+    .googletvbe-widget .gtv-remote {
+      margin: 4px auto 8px; width: 232px; padding: 12px 12px 14px; border-radius: 28px;
+      background: linear-gradient(180deg, #2f3136 0%, #1e1f23 100%); color: #e8eaed;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, .08), 0 6px 18px rgba(0, 0, 0, .35);
+      text-align: center; user-select: none;
+    }
+    .googletvbe-widget .gtv-remote button { font-family: inherit; }
+    .googletvbe-widget .gtv-screen {
+      background: #0e0f11; border-radius: 12px; padding: 7px 10px; margin-bottom: 12px; text-align: left;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06); min-height: 54px;
+    }
+    .googletvbe-widget .gtv-screen-top { display: flex; align-items: center; gap: 6px; font-size: 11px; color: #9aa0a6; }
+    .googletvbe-widget .gtv-dot { width: 8px; height: 8px; border-radius: 50%; background: #5f6368; flex: none; }
+    .googletvbe-widget .gtv-dot.on { background: #34a853; box-shadow: 0 0 6px #34a853; }
+    .googletvbe-widget .gtv-dot.standby { background: #fbbc04; }
+    .googletvbe-widget .gtv-state { flex: 1; }
+    .googletvbe-widget .gtv-volume { white-space: nowrap; }
+    .googletvbe-widget .gtv-app { font-size: 14px; font-weight: 600; color: #e8eaed; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .googletvbe-widget .gtv-media { font-size: 11px; color: #8ab4f8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-height: 14px; }
+    .googletvbe-widget .gtv-row { display: flex; justify-content: center; align-items: center; gap: 10px; margin: 10px 0; }
+    .googletvbe-widget .gtv-row-top { justify-content: space-between; margin-top: 0; }
+    .googletvbe-widget .gtv-btn {
+      width: 44px; height: 44px; border-radius: 50%; border: 0; background: #3c4043; color: #e8eaed; font-size: 15px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .07); cursor: pointer;
+      transition: background .12s, transform .08s;
+    }
+    .googletvbe-widget .gtv-btn:hover { background: #4a4e52; }
+    .googletvbe-widget .gtv-btn:active, .googletvbe-widget .gtv-remote button.pressed { transform: scale(.92); }
+    .googletvbe-widget .gtv-small { width: 36px; height: 36px; font-size: 12px; }
+    .googletvbe-widget .gtv-power { background: #c5221f; }
+    .googletvbe-widget .gtv-power:hover { background: #d93025; }
+    .googletvbe-widget .gtv-power.on { box-shadow: 0 0 0 2px rgba(52, 168, 83, .7), 0 2px 4px rgba(0, 0, 0, .35); }
+    .googletvbe-widget .gtv-play { width: 48px; height: 48px; background: #8ab4f8; color: #202124; font-size: 16px; }
+    .googletvbe-widget .gtv-play:hover { background: #aecbfa; }
+    .googletvbe-widget .gtv-mute.active { background: #f28b82; color: #202124; }
+    .googletvbe-widget .gtv-dpad {
+      position: relative; width: 164px; height: 164px; margin: 6px auto 4px; border-radius: 50%;
+      background: radial-gradient(circle at 50% 40%, #45484d, #2a2c30); box-shadow: 0 3px 8px rgba(0, 0, 0, .45), inset 0 1px 0 rgba(255, 255, 255, .08);
+    }
+    .googletvbe-widget .gtv-arrow {
+      position: absolute; width: 54px; height: 54px; border: 0; background: transparent; color: #bdc1c6; font-size: 16px; cursor: pointer; border-radius: 50%;
+    }
+    .googletvbe-widget .gtv-arrow:hover { color: #fff; background: rgba(255, 255, 255, .06); }
+    .googletvbe-widget .gtv-up { top: 2px; left: 55px; }
+    .googletvbe-widget .gtv-down { bottom: 2px; left: 55px; }
+    .googletvbe-widget .gtv-left { left: 2px; top: 55px; }
+    .googletvbe-widget .gtv-right { right: 2px; top: 55px; }
+    .googletvbe-widget .gtv-ok {
+      position: absolute; top: 50%; left: 50%; width: 62px; height: 62px; margin: -31px 0 0 -31px; border-radius: 50%; border: 0;
+      background: #5f6368; color: #fff; font-weight: 700; font-size: 13px; letter-spacing: .5px; cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, .5), inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+    .googletvbe-widget .gtv-ok:hover { background: #70757a; }
+    .googletvbe-widget .gtv-rocker-row { display: flex; justify-content: space-between; align-items: center; margin: 12px 4px 6px; }
+    .googletvbe-widget .gtv-rocker {
+      display: flex; flex-direction: column; align-items: center; width: 44px; border-radius: 22px; background: #3c4043;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, .35), inset 0 1px 0 rgba(255, 255, 255, .07); overflow: hidden;
+    }
+    .googletvbe-widget .gtv-rocker button { width: 44px; height: 38px; border: 0; background: transparent; color: #e8eaed; cursor: pointer; font-size: 12px; }
+    .googletvbe-widget .gtv-rocker button:hover { background: rgba(255, 255, 255, .08); }
+    .googletvbe-widget .gtv-rocker span { font-size: 9px; letter-spacing: 1px; color: #9aa0a6; line-height: 12px; }
+    .googletvbe-widget .gtv-slider { display: flex; align-items: center; gap: 8px; margin: 4px 6px 10px; color: #9aa0a6; font-size: 11px; }
+    .googletvbe-widget .gtv-slider input { flex: 1; margin: 0; accent-color: #8ab4f8; }
+    .googletvbe-widget .gtv-apps { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+    .googletvbe-widget .gtv-apps button {
+      border: 0; border-radius: 999px; padding: 4px 10px; font-size: 11px; background: #303134; color: #e8eaed; cursor: pointer;
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .1);
+    }
+    .googletvbe-widget .gtv-apps button:hover { background: #3c4043; }
+    .googletvbe-widget .gtv-remote.no-remote [data-key]:not([data-key^="volume"]):not([data-key="mute_toggle"]),
+    .googletvbe-widget .gtv-remote.no-remote .gtv-apps button { opacity: .35; }
+    .googletvbe-widget .gtv-remote.offline .gtv-rocker, .googletvbe-widget .gtv-remote.offline .gtv-mute,
+    .googletvbe-widget .gtv-remote.offline .gtv-slider { opacity: .35; }
+  </style>
+
+  <script>
+    (function () {
+      const widget = document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"]')
+      if (widget === null) { return }
+      /* Identifiants, valeurs et applis passent par des attributs data :
+         échappés en HTML côté serveur, ils ne peuvent rien injecter ici. */
+      const ids = JSON.parse(widget.getAttribute('data-gtv-ids') || '{}')
+      const state = JSON.parse(widget.getAttribute('data-gtv-state') || '{}')
+      const apps = JSON.parse(widget.getAttribute('data-gtv-apps') || '[]')
+      const remote = widget.querySelector('.gtv-remote')
+      const $ = function (_role) { return widget.querySelector('[data-role="' + _role + '"]') }
+
+      /* Noms lisibles des applis Android les plus courantes. */
+      const PACKAGES = {
+        'com.netflix.ninja': 'Netflix', 'com.google.android.youtube.tv': 'YouTube',
+        'com.google.android.youtube.tvkids': 'YouTube Kids', 'com.amazon.amazonvideo.livingroom': 'Prime Video',
+        'com.disney.disneyplus': 'Disney+', 'com.spotify.tv.android': 'Spotify', 'com.plexapp.android': 'Plex',
+        'com.google.android.apps.tv.launcherx': '{{Accueil}}', 'com.google.android.tvlauncher': '{{Accueil}}',
+        'com.android.vending': 'Play Store', 'com.tcl.tv': '{{Chaînes TV}}', 'org.xbmc.kodi': 'Kodi'
+      }
+
+      /* Une touche maintenue sur une TV muette ne doit pas produire une
+         alerte toutes les 220 ms : une toutes les trois secondes suffit. */
+      let lastAlert = 0
+      function exec(_cmd, _value) {
+        if (!ids[_cmd]) { return }
+        jeedom.cmd.execute({
+          id: ids[_cmd], value: _value || {},
+          error: function (_error) {
+            if (Date.now() - lastAlert < 3000) { return }
+            lastAlert = Date.now()
+            jeedomUtils.showAlert({ message: (_error && _error.message) ? _error.message : '{{La TV ne répond pas}}', level: 'danger' })
+          }
+        })
+      }
+
+      /* Une info supprimée par l'utilisateur vaut vide, pas « undefined ». */
+      function val(_key) {
+        return (state[_key] === undefined || state[_key] === null) ? '' : String(state[_key])
+      }
+
+      function render() {
+        const online = val('online') === '1'
+        const linked = val('remote') === '1'
+        const on = online && val('power') === '1'
+        remote.classList.toggle('offline', !online)
+        remote.classList.toggle('no-remote', !linked)
+        const dot = $('dot')
+        dot.className = 'gtv-dot' + (on ? ' on' : (online ? ' standby' : ''))
+        $('state').textContent = !online ? '{{Hors ligne}}' : (on ? '{{Allumée}}' : '{{En veille}}')
+        const muted = val('muted') === '1'
+        const volume = $('volume')
+        volume.textContent = ''
+        if (online && val('volume') !== '') {
+          const icon = document.createElement('i')
+          icon.className = 'fas ' + (muted ? 'fa-volume-mute' : 'fa-volume-up')
+          volume.appendChild(icon)
+          volume.appendChild(document.createTextNode(' ' + val('volume') + ' %'))
+        }
+        let app = val('cast_app')
+        if (app === '' && val('app') !== '') { app = PACKAGES[val('app')] || val('app') }
+        $('app').textContent = on ? (app || '{{Google TV}}') : '—'
+        const media = [val('media_title'), val('media_subtitle')].filter(function (_s) { return _s !== '' }).join(' · ')
+        $('media').textContent = on ? media : ''
+        $('power').classList.toggle('on', on)
+        widget.querySelector('.gtv-mute').classList.toggle('active', muted)
+        $('play-icon').className = 'fas ' + (val('media_state') === 'lecture' ? 'fa-pause' : 'fa-play')
+        const slider = $('volume-slider')
+        if (document.activeElement !== slider && val('volume') !== '') { slider.value = val('volume') }
+      }
+
+      /* Touches : un appui, ou une répétition tant qu'on reste appuyé pour
+         les flèches et le volume. */
+      widget.querySelectorAll('[data-key]').forEach(function (_button) {
+        const key = _button.getAttribute('data-key')
+        if (_button.getAttribute('data-repeat') !== '1') {
+          _button.addEventListener('click', function () { exec(key) })
+          return
+        }
+        let timer = null
+        let delay = null
+        const stop = function () {
+          clearTimeout(delay)
+          clearInterval(timer)
+          delay = null
+          timer = null
+          _button.classList.remove('pressed')
+        }
+        _button.addEventListener('pointerdown', function (_event) {
+          _event.preventDefault()
+          _button.classList.add('pressed')
+          exec(key)
+          delay = setTimeout(function () { timer = setInterval(function () { exec(key) }, 220) }, 450)
+        })
+        ;['pointerup', 'pointerleave', 'pointercancel'].forEach(function (_type) { _button.addEventListener(_type, stop) })
+        /* Au clavier (Entrée, Espace), pas de pointeur : un appui simple. */
+        _button.addEventListener('click', function (_event) { if (_event.detail === 0) { exec(key) } })
+      })
+
+      /* Marche : on allume ce qui est éteint, on éteint ce qui est allumé. */
+      $('power').addEventListener('click', function () {
+        exec(val('online') === '1' && val('power') === '1' ? 'power_off' : 'power_on')
+      })
+
+      $('volume-slider').addEventListener('change', function () { exec('volume_set', { slider: this.value }) })
+
+      /* Vidé d'abord : un script rejoué ne doit pas doubler les boutons. */
+      $('apps').innerHTML = ''
+      apps.forEach(function (_app) {
+        const button = document.createElement('button')
+        button.type = 'button'
+        button.textContent = _app.label
+        button.addEventListener('click', function () { exec('open_app', { select: _app.value }) })
+        $('apps').appendChild(button)
+      })
+
+      if (ids.refresh) {
+        widget.querySelector('.refresh').addEventListener('click', function () { exec('refresh') })
+      } else {
+        widget.querySelector('.refresh').remove()
+      }
+
+      /* Mise à jour en direct. L'uid rend chaque fonction distincte : le
+         coeur ignore une fonction dont le texte est déjà enregistré, et un
+         widget redessiné ne recevrait plus rien. */
+      Object.keys(state).forEach(function (_key) {
+        if (!ids[_key]) { return }
+        jeedom.cmd.addUpdateFunction(ids[_key], function (_options) {
+          if (document.querySelector('.eqLogic[data-eqLogic_uid="#uid#"]') === null) { return }
+          state[_key] = (_options.value === null || _options.value === undefined) ? '' : String(_options.value)
+          render()
+        })
+      })
+      render()
+    })()
+  </script>
+</div>

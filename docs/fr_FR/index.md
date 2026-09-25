@@ -4,6 +4,25 @@ Pilote en réseau local les téléviseurs **Google TV / Android TV** (TCL, Sony,
 Philips, Hisense, Chromecast avec Google TV…), en PHP natif : ni cloud, ni
 Python, ni `adb` à installer.
 
+## Widget : une télécommande
+
+Sur le dashboard, la TV prend la forme d'une télécommande, mise à jour en
+direct :
+
+- un petit écran : allumée, en veille ou hors ligne, volume, appli en cours
+  et ce qui est lu ;
+- marche/arrêt (allume une TV en veille, éteint une TV allumée), source,
+  paramètres ;
+- croix directionnelle et OK, Retour, Accueil, Menu ;
+- précédent, retour rapide, lecture/pause, avance rapide, suivant ;
+- volume (+, −, muet, curseur) et chaînes ;
+- les applis de « Lancer une application », d'un clic.
+
+Les flèches et le volume se répètent tant qu'on reste appuyé. Les touches
+demandent l'appairage de la télécommande : sans lui, elles sont estompées ;
+le volume, qui passe par Cast, reste utilisable. Le widget garde sa taille
+naturelle (270 px de large).
+
 ## Ce que fait le plugin
 
 Le démon garde avec chaque TV une connexion **Google Cast** ouverte (port

@@ -841,6 +841,62 @@ class googletvbe extends eqLogic {
         return $reply;
     }
 
+    /* ============================================================ WIDGET */
+
+    /* Infos suivies en direct par la télécommande du widget, et commandes
+     * qu'elle déclenche. */
+    const WIDGET_INFOS = array('online', 'remote', 'power', 'volume', 'muted', 'app', 'cast_app',
+                               'media_state', 'media_title', 'media_subtitle');
+    const WIDGET_ACTIONS = array('refresh', 'power_on', 'power_off', 'input', 'settings', 'up', 'down', 'left', 'right',
+                                 'ok', 'back', 'home', 'menu', 'previous', 'rewind', 'play_pause', 'forward', 'next',
+                                 'volume_up', 'volume_down', 'mute_toggle', 'channel_up', 'channel_down', 'volume_set', 'open_app');
+
+    /* Une télécommande plutôt que la pile des 58 commandes. */
+    public function toHtml($_version = 'dashboard') {
+        $replace = $this->preToHtml($_version);
+        if (!is_array($replace)) {
+            return $replace;
+        }
+        $version = jeedom::versionAlias($_version);
+        /* Une télécommande a sa taille à elle : la taille retenue par le
+         * dashboard pour l'ancien widget (706 × 370 px, par exemple) la
+         * couperait. */
+        $replace['#width#'] = '270px';
+        $replace['#height#'] = 'auto';
+        $ids = array();
+        $state = array();
+        foreach (array_merge(self::WIDGET_INFOS, self::WIDGET_ACTIONS) as $logicalId) {
+            $cmd = $this->getCmd(null, $logicalId);
+            if (!is_object($cmd)) {
+                continue;
+            }
+            $ids[$logicalId] = (string) $cmd->getId();
+            if ($cmd->getType() === 'info') {
+                $value = $cmd->execCmd();
+                $state[$logicalId] = ($value === null) ? '' : (string) $value;
+            }
+        }
+        /* Les applis de la commande « Lancer une application », telles que
+         * l'utilisateur a pu les modifier. */
+        $apps = array();
+        $openApp = $this->getCmd('action', 'open_app');
+        $list = is_object($openApp) ? (string) $openApp->getConfiguration('listValue', '') : '';
+        foreach (explode(';', $list) as $entry) {
+            $parts = explode('|', $entry, 2);
+            if (trim($parts[0]) !== '') {
+                $apps[] = array('value' => trim($parts[0]), 'label' => trim(isset($parts[1]) ? $parts[1] : $parts[0]));
+            }
+        }
+        $replace['#refresh_id#'] = isset($ids['refresh']) ? $ids['refresh'] : '';
+        /* En attribut HTML, échappé : le script les relit sans rien évaluer. */
+        $replace['#gtv_ids#'] = htmlspecialchars(json_encode($ids), ENT_QUOTES);
+        $replace['#gtv_state#'] = htmlspecialchars(json_encode($state, JSON_UNESCAPED_UNICODE), ENT_QUOTES);
+        $replace['#gtv_apps#'] = htmlspecialchars(json_encode($apps, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES), ENT_QUOTES);
+        $template = getTemplate('core', $version, 'googletvbe', __CLASS__);
+        $html = translate::exec($template, 'plugins/googletvbe/core/template/' . $version . '/googletvbe.html');
+        return $this->postToHtml($_version, template_replace($replace, $html));
+    }
+
     /* ========================================================= RÉVEIL RÉSEAU */
 
     /* Adresses MAC d'un champ libre : séparées par virgules, espaces ou

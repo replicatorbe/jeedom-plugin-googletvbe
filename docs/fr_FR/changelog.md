@@ -2,6 +2,8 @@
 
 ## 0.2.0
 
+- Widget en forme de télécommande : écran d'état, croix directionnelle,
+  lecture, volume, chaînes, applis, mise à jour en direct.
 - TvOverlay : surveillance et relance de l'appli par la télécommande (fiche
   Play Store, Ouvrir, Retour, Lecture), dans les minutes qui suivent
   l'allumage par défaut, en tâche de fond, jamais deux fois en moins de deux
