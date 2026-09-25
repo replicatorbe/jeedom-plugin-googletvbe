@@ -1,0 +1,32 @@
+{
+    "id": "googletvbe",
+    "name": "Google TV",
+    "pluginVersion": "0.2.0",
+    "description": {
+        "fr_FR": "Pilote en réseau local les téléviseurs Google TV et Android TV (TCL, Sony, Philips, Hisense, Chromecast avec Google TV…), en PHP natif, sans cloud ni dépendance. Le plugin trouve les TV du réseau par SSDP, les reconnaît par leur identifiant même quand leur adresse IP change, et garde avec chacune une connexion Google Cast ouverte : volume réglable au pourcent près, muet, veille, application Cast en cours, titre et état de la lecture, lecture, pause, suivant, précédent. Une fois appairée par le code affiché à l'écran, la TV se pilote aussi comme avec l'appli Google TV : toutes les touches, marche/arrêt, sources HDMI, lancement d'applis, appli au premier plan. Les changements arrivent en direct, sans relevé périodique. Réveil réseau (Wake-on-LAN) en secours. Garde en marche l'appli TvOverlay, qui affiche les notifications du plugin TvOverlay, en la relançant quand Android l'arrête.",
+        "en_US": "Drives Google TV and Android TV sets (TCL, Sony, Philips, Hisense, Chromecast with Google TV…) over the local network, in native PHP, with no cloud and nothing to install. The plugin finds TVs on the network over SSDP, recognises them by their identifier even when their IP address changes, and keeps a Google Cast connection open with each one: volume set to the percent, mute, standby, current Cast application, title and state of playback, play, pause, next, previous. Once paired with the code shown on screen, the TV is also driven like the Google TV app: every key, power, HDMI inputs, app launch, foreground app. Changes arrive live, with no polling. Wake-on-LAN as a fallback. Keeps the TvOverlay app running, which shows the notifications of the TvOverlay plugin, by relaunching it when Android stops it."
+    },
+    "licence": "AGPL",
+    "author": "sMug (Jérôme Fafchamps)",
+    "require": "4.4",
+    "requireOsVersion": "11",
+    "category": "multimedia",
+    "index": "googletvbe",
+    "hasDependency": 0,
+    "hasOwnDeamon": 1,
+    "eventjs": 0,
+    "issue": "https://github.com/replicatorbe/jeedom-plugin-googletvbe/issues",
+    "documentation": "https://github.com/replicatorbe/jeedom-plugin-googletvbe/blob/master/docs/#language#/index.md",
+    "documentation_beta": "https://github.com/replicatorbe/jeedom-plugin-googletvbe/blob/beta/docs/#language#/index.md",
+    "changelog": "https://github.com/replicatorbe/jeedom-plugin-googletvbe/blob/master/docs/#language#/changelog.md",
+    "changelog_beta": "https://github.com/replicatorbe/jeedom-plugin-googletvbe/blob/beta/docs/#language#/changelog.md",
+    "language": [
+        "fr_FR"
+    ],
+    "compatibility": [
+        "smart",
+        "rpi",
+        "docker",
+        "diy"
+    ]
+}
