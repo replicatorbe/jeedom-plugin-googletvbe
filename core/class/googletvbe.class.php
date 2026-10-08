@@ -188,6 +188,12 @@ class googletvbe extends eqLogic {
      * jour : les notifications sont passées au plugin TvOverlay. */
     const OBSOLETE_COMMANDS = array('notify', 'notify_json', 'notify_fixed');
 
+    /* Commandes propres à TvOverlay : créées seulement si la case
+     * « TvOverlay » de l'équipement est cochée. Décochée, les commandes déjà
+     * là ne sont pas supprimées ; supprimées à la main, elles ne reviennent
+     * plus à l'enregistrement ni à la mise à jour du plugin. */
+    const OVERLAY_COMMANDS = array('overlay', 'overlay_restart');
+
     /* =============================================================== DÉMON */
 
     public static function deamon_info() {
@@ -456,6 +462,9 @@ class googletvbe extends eqLogic {
         $order = 0;
         foreach (self::COMMANDS as $logicalId => $def) {
             $order++;
+            if (in_array($logicalId, self::OVERLAY_COMMANDS, true) && !$this->overlayWanted()) {
+                continue;
+            }
             $cmd = $this->getCmd(null, $logicalId);
             if (is_object($cmd)) {
                 /* Noms abîmés par le coeur avant la 0.2 : « / » et « ' » y sont
@@ -644,6 +653,11 @@ class googletvbe extends eqLogic {
     }
 
     /* ========================================================= TVOVERLAY */
+
+    /* La case « TvOverlay » seule, adresse IP renseignée ou non. */
+    public function overlayWanted() {
+        return (int) $this->getConfiguration('overlay', 0) === 1;
+    }
 
     public function overlayEnabled() {
         return $this->isConfigured() && (int) $this->getConfiguration('overlay', 0) === 1;

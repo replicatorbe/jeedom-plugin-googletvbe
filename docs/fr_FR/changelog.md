@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.1
+
+- Les commandes « TvOverlay actif » et « Relancer TvOverlay » ne sont créées
+  que si la case TvOverlay de l'équipement est cochée : supprimées à la main
+  sur une TV sans TvOverlay, elles ne reviennent plus à l'enregistrement ni à
+  la mise à jour du plugin.
+
 ## 0.2.0
 
 - Widget en forme de télécommande : écran d'état, croix directionnelle,
