@@ -219,9 +219,14 @@ function googletvbeLoadDevices() {
     }
     $seen = array();
     foreach ($data['devices'] as $device) {
+        /* Entrée incomplète (équipement à moitié configuré, réponse
+         * tronquée) : on l'ignore plutôt que de semer des warnings. */
+        if (!is_array($device) || !isset($device['id'], $device['ip'])) {
+            continue;
+        }
         $id = (int) $device['id'];
         $host = (string) $device['ip'];
-        $label = (string) $device['name'];
+        $label = isset($device['name']) ? (string) $device['name'] : (string) $id;
         $paired = !empty($device['paired']) && $hasClient;
         if ($id <= 0 || $host === '') {
             continue;

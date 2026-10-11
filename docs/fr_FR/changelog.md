@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.2
+
+- Le démon ignore une TV transmise sans identifiant ou sans adresse IP, au
+  lieu de produire des warnings PHP « Undefined array key » dans son journal.
+
 ## 0.2.1
 
 - Les commandes « TvOverlay actif » et « Relancer TvOverlay » ne sont créées
