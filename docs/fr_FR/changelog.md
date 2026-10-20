@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.2.3
+
+- Le point d'entrée appelé par le démon n'accepte plus que la clé API du
+  plugin : la clé personnelle d'un utilisateur Jeedom y donnait aussi accès.
+
 ## 0.2.2
 
 - Le démon ignore une TV transmise sans identifiant ou sans adresse IP, au
