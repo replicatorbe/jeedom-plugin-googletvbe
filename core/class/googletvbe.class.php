@@ -120,9 +120,9 @@ class googletvbe extends eqLogic {
         'active_input'   => array('name' => 'Entrée active', 'type' => 'info', 'subType' => 'binary', 'visible' => 0),
 
         'refresh'        => array('name' => 'Rafraîchir', 'type' => 'action', 'subType' => 'other'),
-        'power_on'       => array('name' => 'Allumer', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-power-off'),
-        'power_off'      => array('name' => 'Éteindre', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-power-off'),
-        'power_toggle'   => array('name' => 'Marche-arrêt', 'type' => 'action', 'subType' => 'other', 'visible' => 0),
+        'power_on'       => array('name' => 'Allumer', 'type' => 'action', 'subType' => 'other', 'value' => 'power', 'icon' => 'fas fa-power-off'),
+        'power_off'      => array('name' => 'Éteindre', 'type' => 'action', 'subType' => 'other', 'value' => 'power', 'icon' => 'fas fa-power-off'),
+        'power_toggle'   => array('name' => 'Marche-arrêt', 'type' => 'action', 'subType' => 'other', 'value' => 'power', 'visible' => 0),
         'wol'            => array('name' => 'Allumer (réveil réseau)', 'type' => 'action', 'subType' => 'other', 'visible' => 0),
         'up'             => array('name' => 'Haut', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-chevron-up'),
         'down'           => array('name' => 'Bas', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-chevron-down'),
@@ -148,8 +148,8 @@ class googletvbe extends eqLogic {
         'volume_set'     => array('name' => 'Régler le volume', 'type' => 'action', 'subType' => 'slider', 'value' => 'volume', 'minValue' => 0, 'maxValue' => 100),
         'volume_up'      => array('name' => 'Volume +', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-volume-up'),
         'volume_down'    => array('name' => 'Volume -', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-volume-down'),
-        'mute_on'        => array('name' => 'Couper le son', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-volume-mute'),
-        'mute_off'       => array('name' => 'Rétablir le son', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-volume-off'),
+        'mute_on'        => array('name' => 'Couper le son', 'type' => 'action', 'subType' => 'other', 'value' => 'muted', 'icon' => 'fas fa-volume-mute'),
+        'mute_off'       => array('name' => 'Rétablir le son', 'type' => 'action', 'subType' => 'other', 'value' => 'muted', 'icon' => 'fas fa-volume-off'),
         'mute_toggle'    => array('name' => 'Muet on-off', 'type' => 'action', 'subType' => 'other', 'visible' => 0),
         'play'           => array('name' => 'Lire', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-play'),
         'pause'          => array('name' => 'Pause', 'type' => 'action', 'subType' => 'other', 'icon' => 'fas fa-pause'),
@@ -194,6 +194,61 @@ class googletvbe extends eqLogic {
      * plus à l'enregistrement ni à la mise à jour du plugin. */
     const OVERLAY_COMMANDS = array('overlay', 'overlay_restart');
 
+    /* ============================================================== SANTÉ */
+
+    /*
+     * Page Santé de Jeedom : l'état du démon y est déjà. On n'y ajoute que
+     * ce qui se lit en base et dans le cache, sans interroger aucune TV.
+     */
+    public static function health() {
+        $tvs = array();
+        foreach (self::byType(__CLASS__, true) as $eqLogic) {
+            if ($eqLogic->isConfigured()) {
+                $tvs[] = $eqLogic;
+            }
+        }
+        $names = function ($_list) {
+            return htmlspecialchars(implode(', ', array_map(function ($eq) { return $eq->getHumanName(); }, $_list)), ENT_QUOTES);
+        };
+        $info = function ($_eq, $_logicalId) {
+            $cmd = $_eq->getCmd('info', $_logicalId);
+            return is_object($cmd) && (int) $cmd->execCmd() === 1;
+        };
+        $offline = array_filter($tvs, function ($eq) use ($info) { return !$info($eq, 'online'); });
+        $unpaired = array_filter($tvs, function ($eq) { return (int) $eq->getConfiguration('paired', 0) !== 1; });
+        /* Une télécommande ne se connecte qu'à une TV appairée et joignable. */
+        $remoteDown = array_filter($tvs, function ($eq) use ($info) {
+            return (int) $eq->getConfiguration('paired', 0) === 1 && $info($eq, 'online') && !$info($eq, 'remote');
+        });
+        $seen = (int) cache::byKey('googletvbe::daemon_seen')->getValue(0);
+        return array(
+            array(
+                'test'   => __('Dernier appel du démon', __FILE__),
+                'result' => $seen > 0 ? date('d/m H:i:s', $seen) : __('jamais', __FILE__),
+                'advice' => time() - $seen <= 150 ? '' : __('Le démon relit la liste des TV chaque minute : arrêté, ou il ne joint plus Jeedom (clé API, accès API du plugin).', __FILE__),
+                'state'  => time() - $seen <= 150,
+            ),
+            array(
+                'test'   => __('TV en ligne', __FILE__),
+                'result' => (count($tvs) - count($offline)) . '/' . count($tvs) . (empty($offline) ? '' : ' — ' . $names($offline)),
+                'advice' => empty($offline) ? '' : __('TV débranchée, en veille profonde ou adresse IP changée (la recherche la retrouve).', __FILE__),
+                'state'  => empty($offline),
+            ),
+            array(
+                'test'   => __('Télécommandes appairées', __FILE__),
+                'result' => (count($tvs) - count($unpaired)) . '/' . count($tvs) . (empty($unpaired) ? '' : ' — ' . $names($unpaired)),
+                'advice' => empty($unpaired) ? '' : __('Sans appairage, seules les commandes Cast fonctionnent : touches, marche-arrêt et sources demandent l\'appairage (bouton sur la fiche de l\'équipement).', __FILE__),
+                'state'  => empty($unpaired),
+            ),
+            array(
+                'test'   => __('Télécommandes connectées', __FILE__),
+                'result' => empty($remoteDown) ? __('OK', __FILE__) : $names($remoteDown),
+                'advice' => empty($remoteDown) ? '' : __('TV en ligne mais télécommande refusée : appairage perdu (réinitialisation de la TV) ? Refaites l\'appairage.', __FILE__),
+                'state'  => empty($remoteDown),
+            ),
+        );
+    }
+
     /* =============================================================== DÉMON */
 
     public static function deamon_info() {
@@ -219,6 +274,12 @@ class googletvbe extends eqLogic {
 
     public static function deamon_start() {
         self::deamon_stop();
+        /* Le nouveau démon s'arrêterait aussitôt sur un port encore tenu.
+         * Un autre programme qui l'occupe n'est pas tué : le journal du
+         * démon le dira. */
+        for ($i = 0; $i < 40 && self::portBusy(); $i++) {
+            usleep(250000);
+        }
         $daemon = realpath(__DIR__ . '/../../resources/googletvbed/googletvbed.php');
         $cmd  = 'php ' . escapeshellarg($daemon);
         $cmd .= ' --callback ' . escapeshellarg(self::getCallbackUrl());
@@ -252,22 +313,58 @@ class googletvbe extends eqLogic {
         return false;
     }
 
+    /* Arrêt propre : SIGTERM, puis jusqu'à dix secondes pour que le démon
+     * ferme ses connexions aux TV et son port d'ordres. Un kill -9 immédiat
+     * laissait le port pris au moment où deamon_start relançait. */
     public static function deamon_stop() {
         $pid_file = jeedom::getTmpFolder(__CLASS__) . '/deamon.pid';
         if (file_exists($pid_file)) {
-            $pid = trim(file_get_contents($pid_file));
-            if ($pid != '') {
-                system::kill($pid);
+            $pid = (int) trim(file_get_contents($pid_file));
+            if ($pid > 0 && self::isDaemonPid($pid)) {
+                posix_kill($pid, 15);
+                for ($i = 0; $i < 40 && self::isDaemonPid($pid); $i++) {
+                    usleep(250000);
+                }
+                if (self::isDaemonPid($pid)) {
+                    posix_kill($pid, 9);
+                }
             }
             @unlink($pid_file);
         }
-        system::kill('resources/googletvbed/googletvbed.php');
+        /* Filet de sécurité : un démon lancé à la main, ou dont le fichier de
+         * PID a été perdu, garderait le port d'ordres. */
+        if (count(system::ps('resources/googletvbed/googletvbed.php')) > 0) {
+            system::kill('resources/googletvbed/googletvbed.php', false);
+            for ($i = 0; $i < 20 && count(system::ps('resources/googletvbed/googletvbed.php')) > 0; $i++) {
+                usleep(250000);
+            }
+            if (count(system::ps('resources/googletvbed/googletvbed.php')) > 0) {
+                system::kill('resources/googletvbed/googletvbed.php');
+            }
+        }
         /* Plus personne ne tient les connexions : l'état affiché ne doit pas
          * les dire ouvertes. */
         foreach (self::byType(__CLASS__) as $eqLogic) {
             $eqLogic->checkAndUpdateCmd('online', 0);
             $eqLogic->checkAndUpdateCmd('remote', 0);
         }
+        return true;
+    }
+
+    /* Le PID est-il toujours notre démon ? Après un kill -9, il a pu être
+     * réattribué à un autre processus. */
+    private static function isDaemonPid($_pid) {
+        $cmdline = @file_get_contents('/proc/' . (int) $_pid . '/cmdline');
+        return $cmdline !== false && strpos($cmdline, 'googletvbed.php') !== false;
+    }
+
+    /* Quelqu'un écoute-t-il encore sur le port d'ordres ? */
+    private static function portBusy() {
+        $socket = @fsockopen('127.0.0.1', self::daemonPort(), $errno, $errstr, 0.5);
+        if ($socket === false) {
+            return false;
+        }
+        fclose($socket);
         return true;
     }
 
@@ -477,6 +574,16 @@ class googletvbe extends eqLogic {
                         $cmd->save();
                     } catch (Throwable $e) {
                         log::add(__CLASS__, 'debug', $this->getHumanName() . ' : ' . $e->getMessage());
+                    }
+                }
+                /* Action liée à son info (bouton d'état du widget, appli
+                 * mobile) : les commandes créées avant ce lien le reçoivent
+                 * ici. Un lien posé par l'utilisateur est gardé. */
+                if (isset($def['value']) && $cmd->getValue() == '') {
+                    $info = $this->getCmd('info', $def['value']);
+                    if (is_object($info)) {
+                        $cmd->setValue($info->getId());
+                        $cmd->save();
                     }
                 }
                 /* Les listes de choix suivent les versions du plugin. */

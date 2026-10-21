@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.2.4
+
+- Allumer, Éteindre et Marche-arrêt sont liées à l'info « Allumée », Couper
+  et Rétablir le son à « Muet » : les équipements existants reçoivent le
+  lien à la mise à jour ou au prochain enregistrement.
+- Page Santé : dernier appel du démon, TV en ligne, télécommandes appairées
+  et connectées.
+- Arrêt du démon : SIGTERM puis jusqu'à dix secondes pour fermer ses
+  connexions avant un kill -9 ; au démarrage, attente que le port d'ordres
+  soit libéré.
+
 ## 0.2.3
 
 - Le point d'entrée appelé par le démon n'accepte plus que la clé API du
